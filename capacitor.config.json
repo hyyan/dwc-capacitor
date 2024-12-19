@@ -1,0 +1,7 @@
+{
+  "appId": "com.webforj.mobile",
+  "appName": "ionic",
+  "server": {
+    "url": "http://localhost:8888/webapp/electrontest"
+  }
+}

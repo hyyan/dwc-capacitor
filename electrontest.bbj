@@ -1,0 +1,47 @@
+web! = BBjAPI().getWebManager()
+rem The app should include a viewport meta tag which contains `viewport-fit=cover`, like the following.
+rem This causes the viewport to be scaled to fill the device display.
+web!.setMeta("viewport", "width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=no")
+
+sysgui! = BBjAPI().openSysGui("X0")
+wnd! = sysgui!.addWindow("Hello BBj DWC", $01101083$)
+
+wnd!.setPanelStyle("display","flex")
+wnd!.setPanelStyle("flex-direction","column")
+wnd!.setPanelStyle("gap","10px")
+wnd!.setPanelStyle("margin"," 100px auto")
+wnd!.setPanelStyle("max-width","300px")
+wnd!.setCallback(BBjAPI.ON_CLOSE,"byebye")
+
+ed_firstname! = wnd!.addEditBox("")
+ed_firstname!.setAttribute("label", "First Name:")
+ed_lastname! = wnd!.addEditBox("")
+ed_lastname!.setAttribute("label", "Last Name:")
+
+btnIcon$ = "<dwc-icon name='speakerphone'></dwc-icon>"
+btn! = wnd!.addButton("<html>Say Hello  " + btnIcon$ +"</html>")
+btn!.setAttribute("theme","primary")
+btn!.setCallback(BBjAPI.ON_BUTTON_PUSH,"sayhello")
+
+rb! = wnd!.addRadioButton("Dark Mode")
+rb!.setAttribute("switch", "")
+rb!.setAttribute("expanse", "m")
+rb!.setCallback(BBjAPI.ON_CHECK_CHANGE, "darkmode")
+
+process_events
+
+byebye: bye
+
+sayhello:
+    msg$ = "Hello, " + ed_firstname!.getText() + " " + ed_lastname!.getText() + "!"
+    x=msgbox(msg$,0,"DWC Capacitor")
+return
+
+darkmode:
+  event! = sysgui!.getLastEvent()
+  if event!.isChecked() then
+      web!.setTheme("dark")
+  else
+      web!.setTheme("light")
+  fi
+return
